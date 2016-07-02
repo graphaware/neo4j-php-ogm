@@ -135,16 +135,21 @@ class BaseRepository
     /**
      * @param string $key
      * @param mixed  $value
+     * @param bool isId
+     * @param bool $match
      *
      * @return object[]
      *
      * @throws \GraphAware\Neo4j\Client\Exception\Neo4jException
      */
-    public function findBy($key, $value, $isId = false)
+    private function findByQuery($key, $value, $isId = false, $match = false)
     {
         $label = $this->classMetadata->getLabel();
         $idId = $isId ? 'id(n)' : sprintf('n.%s', $key);
-        $query = sprintf('MATCH (n:%s) WHERE %s = {%s}', $label, $idId, $key);
+        $matchRegexp = $match ? '=~' : '-';
+
+        $query = sprintf('MATCH (n:%s) WHERE %s %s {%s}', $label, $idId, $matchRegexp, $key);
+
         /** @var \GraphAware\Neo4j\OGM\Metadata\RelationshipMetadata[] $associations */
         $associations = $this->classMetadata->getRelationships();
         $assocReturns = [];
@@ -190,6 +195,73 @@ class BaseRepository
         $result = $this->entityManager->getDatabaseDriver()->run($query, $parameters);
 
         return $this->hydrateResultSet($result);
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return object[]
+     *
+     * @throws \GraphAware\Neo4j\Client\Exception\Neo4jException
+     */
+    public function findBy($key, $value, $isId = false)
+    {
+        return $this->findByQuery($key, $value, $isId, false);
+    }
+
+     /**
+     * Matches results by regexp. To make it easier, the options to case insensitive and starts/ends with are default
+     * Send null on startsWith and endsWith when you want to use your own regexp
+     *
+     * @param string $key
+     * @param mixed  $value
+     * @param bool $caseInsensitive
+     * @param bool $startsWith
+     * @param bool $endsWith
+     *
+     * @return object[]
+     *
+     * @throws \GraphAware\Neo4j\Client\Exception\Neo4jException
+     */
+    public function matchBy($key, $value, $caseInsensitive=true, $startsWith=true, $endsWith=true)
+    {
+        if($startsWith !== null) {
+            $value = $startsWith ? sprintf("$value%s", '.*') : $value;
+        }
+
+        if($endsWith !== null) {
+            $value = $endsWith ? sprintf("%s$value", '.*') : $value;
+        }
+
+        $value = $caseInsensitive ? sprintf("%s$value", '(?i)') : $value;
+
+        return $this->findByQuery($key, $value, false, true);
+    }
+
+    /**
+     * Matches a result by regexp. To make it easier, the options to case insensitive and starts/ends with are default
+     * Send null on startsWith and endsWith when you want to use your own regexp
+     *
+     * @param string $key
+     * @param mixed  $value
+     * @param bool $caseInsensitive
+     * @param bool $startsWith
+     * @param bool $endsWith
+     *
+     * @return object[]
+     *
+     * @throws \GraphAware\Neo4j\Client\Exception\Neo4jException
+     */
+    public function matchOneBy($key, $value, $caseInsensitive=true, $startsWith=true, $endsWith=true)
+    {
+        $instances = $this->matchBy($key, $value, $caseInsensitive, $startsWith, $endsWith);
+
+        if (count($instances) > 1) {
+            throw new \Exception('Expected only one result, got '.count($instances));
+        }
+
+        return isset($instances[0]) ? $instances[0] : null;
     }
 
     /**
