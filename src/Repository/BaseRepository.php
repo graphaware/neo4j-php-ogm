@@ -346,7 +346,7 @@ class BaseRepository
 
     public function findOneById($id)
     {
-        $hydrated = $this->findBy('id', $id, true);
+        $hydrated = $this->findBy('id', (int)$id, true);
 
         return isset($hydrated[0]) ? $hydrated[0] : null;
     }
