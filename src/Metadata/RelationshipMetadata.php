@@ -56,7 +56,6 @@ final class RelationshipMetadata
      * @param \ReflectionProperty                            $reflectionProperty
      * @param \GraphAware\Neo4j\OGM\Annotations\Relationship $relationshipAnnotation
      * @param bool                                           $isLazy
-     * @param OrderBy                                        $orderBy
      */
     public function __construct($className, \ReflectionProperty $reflectionProperty, Relationship $relationshipAnnotation, $isLazy = false, OrderBy $orderBy = null)
     {
@@ -198,24 +197,23 @@ final class RelationshipMetadata
             throw new \LogicException(sprintf('The property mapping this relationship is not of collection type in "%s"', $this->className));
         }
 
-        if ($this->getValue($object) instanceof ArrayCollection || is_array($this->getValue($object)) || $this->getValue($object) instanceof LazyRelationshipCollection) {
+        if(is_array($this->getValue($object)) && !empty($this->getValue($object))) {
+            $this->setValue($object, new ArrayCollection($this->getValue($object)));
             return;
         }
 
-        if (null === $this->getValue($object)) {
-            $this->setValue($object, new Collection());
-
+        if ($this->getValue($object) instanceof ArrayCollection || $this->getValue($object) instanceof LazyRelationshipCollection) {
             return;
         }
 
-        //throw new \RuntimeException(sprintf('Unexpected initial value in %s', $this->className));
+        $this->setValue($object, new Collection());
     }
 
     /**
      * @param object $object
      * @param mixed  $value
      */
-    public function addToCollection($object, $value)
+    public function addToCollection(&$object, $value)
     {
         if (!$this->isCollection()) {
             throw new \LogicException(sprintf('The property mapping of this relationship is not of collection type in "%s"', $this->className));
@@ -231,7 +229,6 @@ final class RelationshipMetadata
                 $toAdd = false;
             }
         }
-
         if ($toAdd) {
             $coll->add($value);
         }
