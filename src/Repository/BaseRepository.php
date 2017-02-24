@@ -119,7 +119,7 @@ class BaseRepository
         }
 
         /** @var RelationshipMetadata[] $associations */
-        $associations = $this->classMetadata->getRelationships();
+        $associations = $this->classMetadata->getFetchRelationships();
         $assocReturns = [];
         foreach ($associations as $identifier => $association) {
             $type = $association->isRelationshipEntity() ? $this->entityManager->getRelationshipEntityMetadata($association->getRelationshipEntityClass())->getType() : $association->getType();
@@ -224,7 +224,7 @@ class BaseRepository
 
         $result = $this->entityManager->getDatabaseDriver()->run($query, $parameters, json_encode($tag));
 
-        return $this->entityManager->getHydrator()->hydrateResultSet($result);
+        return $this->entityManager->getHydrator($this->className)->hydrateResultSet($result);
     }
 
     /**
@@ -241,7 +241,7 @@ class BaseRepository
         $idId = $isId ? 'id(n)' : sprintf('n.%s', $key);
         $query = sprintf('MATCH (n:%s) WHERE %s = {%s}', $label, $idId, $key);
         /** @var \GraphAware\Neo4j\OGM\Metadata\RelationshipMetadata[] $associations */
-        $associations = $this->classMetadata->getNonLazyRelationships();
+        $associations = $this->classMetadata->getFetchRelationships();
         $assocReturns = [];
         foreach ($associations as $identifier => $association) {
             $type = $association->isRelationshipEntity() ? $this->entityManager->getRelationshipEntityMetadata($association->getRelationshipEntityClass())->getType() : $association->getType();
@@ -260,15 +260,15 @@ class BaseRepository
             $relationshipIdentifier = sprintf('%s_%s', strtolower($association->getPropertyName()), strtolower($type));
             $relQueryPart = sprintf($relStr, $relationshipIdentifier, $type);
             $query .= PHP_EOL;
-            $query .= 'OPTIONAL MATCH (n)'.$relQueryPart.'('.$association->getPropertyName().')';
+            $query .= 'OPTIONAL MATCH (n)' . $relQueryPart . '(' . $association->getPropertyName() . ')';
             $query .= ' WITH n, ';
             $query .= implode(', ', $assocReturns);
             if (!empty($assocReturns)) {
                 $query .= ', ';
             }
-            $relid = 'rel_'.$relationshipIdentifier;
+            $relid = 'rel_' . $relationshipIdentifier;
             if ($association->hasOrderBy()) {
-                $orderProperty = $association->getPropertyName().'.'.$association->getOrderByPropery();
+                $orderProperty = $association->getPropertyName() . '.' . $association->getOrderByPropery();
                 if ($association->isRelationshipEntity()) {
                     $reMetadata = $this->entityManager->getRelationshipEntityMetadata($association->getRelationshipEntityClass());
                     $split = explode('.', $association->getOrderByPropery());
@@ -276,15 +276,15 @@ class BaseRepository
                         $reName = $split[0];
                         $v = $split[1];
                         if ($reMetadata->getStartNodePropertyName() === $reName || $reMetadata->getEndNodePropertyName() === $reName) {
-                            $orderProperty = $association->getPropertyName().'.'.$v;
+                            $orderProperty = $association->getPropertyName() . '.' . $v;
                         }
                     } else {
                         if (null !== $reMetadata->getPropertyMetadata($association->getOrderByPropery())) {
-                            $orderProperty = $relid.'.'.$association->getOrderByPropery();
+                            $orderProperty = $relid . '.' . $association->getOrderByPropery();
                         }
                     }
                 }
-                $query .= $relid.', '.$association->getPropertyName().' ORDER BY '.$orderProperty.' '.$association->getOrder();
+                $query .= $relid . ', ' . $association->getPropertyName() . ' ORDER BY ' . $orderProperty . ' ' . $association->getOrder();
                 $query .= PHP_EOL;
                 $query .= ' WITH n, ';
                 $query .= implode(', ', $assocReturns);
@@ -304,7 +304,7 @@ class BaseRepository
         $query .= PHP_EOL;
         $query .= 'RETURN n';
         if (!empty($assocReturns)) {
-            $query .= ', '.implode(', ', $assocReturns);
+            $query .= ', ' . implode(', ', $assocReturns);
         }
 
         //print_r($query);
@@ -312,7 +312,60 @@ class BaseRepository
         $parameters = [$key => $value];
         $result = $this->entityManager->getDatabaseDriver()->run($query, $parameters);
 
-        return $this->entityManager->getHydrator()->hydrateResultSet($result);
+
+        return $this->entityManager->getHydrator($this->className)->hydrateResultSet($result);
+    }
+
+    private function hydrateFetchRelationships($instance, Record $record)
+    {
+        foreach ($this->classMetadata->getFetchRelationships() as $relationship) {
+            $identifier = $relationship->getPropertyName();
+            $otherClass = $relationship->getTargetEntity();
+            $otherNodeMeta = $this->entityManager->getClassMetadata($otherClass);
+            if (!$relationship->isCollection()) {
+                if (null === $record->get($identifier)) {
+                    continue;
+                }
+                $otherInstance = null !== $this->entityManager->getUnitOfWork()->getEntityById($record->get($identifier)->identity())
+                    ? $this->entityManager->getUnitOfWork()->getEntityById($record->get($identifier))
+                    : $this->entityManager->getProxyFactory($otherNodeMeta)->fromNode($record->get($identifier), $this->classMetadata->getMappedByFieldsForFetch());
+                $this->hydrateProperties($otherInstance, $record->get($identifier), $otherNodeMeta);
+                $this->entityManager->getUnitOfWork()->addManaged($otherInstance);
+                $relationship->setValue($instance, $otherInstance);
+                $this->setInversedAssociation($instance, $otherInstance, $relationship->getPropertyName());
+                $this->entityManager->getUnitOfWork()->addManagedRelationshipReference($instance, $otherInstance, $relationship->getPropertyName(), $relationship);
+            }
+        }
+    }
+
+    public function setInversedAssociation($baseInstance, $otherInstance, $relationshipKey)
+    {
+        $class = get_class($otherInstance);
+        if (false !== get_parent_class($otherInstance)) {
+            $class = get_parent_class($otherInstance);
+        }
+        $assoc = $this->classMetadata->getRelationship($relationshipKey);
+        if ($assoc->hasMappedByProperty()) {
+            $mappedBy = $assoc->getMappedByProperty();
+            $reflClass = $this->getReflectionClass($class);
+            $property = $reflClass->getProperty($mappedBy);
+            $property->setAccessible(true);
+            $otherClassMetadata = $this->entityManager->getClassMetadataFor(get_class($otherInstance));
+            if ($otherClassMetadata instanceof RelationshipMetadata || $otherClassMetadata instanceof RelationshipEntityMetadata) {
+                return;
+            }
+            if ($otherClassMetadata->getRelationship($mappedBy)->isCollection()) {
+                if (null === $property->getValue($otherInstance)) {
+                    $mt = $otherClassMetadata->getRelationship($mappedBy);
+                    $lazy = new LazyRelationshipCollection($this->entityManager, $otherInstance, $mt->getTargetEntity(), $mt, $baseInstance);
+                    $property->setValue($otherInstance, $lazy);
+                } else {
+                    $property->getValue($otherInstance)->addInit($baseInstance);
+                }
+            } else {
+                $property->setValue($otherInstance, $baseInstance);
+            }
+        }
     }
 
     public function paginated($first, $max, array $order = [])
@@ -366,41 +419,10 @@ class BaseRepository
         $results = [];
         $mappingMetadata = $this->entityManager->getResultMappingMetadata($resultMapping->getQueryResultClass());
         foreach ($result->records() as $record) {
-            $results[] = $this->entityManager->getHydrator()->hydrateQueryRecord($mappingMetadata, $record);
+            $results[] = $this->entityManager->getHydrator($this->className)->hydrateQueryRecord($mappingMetadata, $record);
         }
 
         return $resultMapping->getQueryResultType() === QueryResultMapping::RESULT_SINGLE ? $results[0] : $results;
-    }
-
-
-    public function setInversedAssociation($baseInstance, $otherInstance, $relationshipKey)
-    {
-        $class = get_class($otherInstance);
-        if (false !== get_parent_class($otherInstance)) {
-            $class = get_parent_class($otherInstance);
-        }
-        $assoc = $this->classMetadata->getRelationship($relationshipKey);
-        if ($assoc->hasMappedByProperty()) {
-            $mappedBy = $assoc->getMappedByProperty();
-            $reflClass = $this->getReflectionClass($class);
-            $property = $reflClass->getProperty($mappedBy);
-            $property->setAccessible(true);
-            $otherClassMetadata = $this->entityManager->getClassMetadataFor(get_class($otherInstance));
-            if ($otherClassMetadata instanceof RelationshipMetadata || $otherClassMetadata instanceof RelationshipEntityMetadata) {
-                return;
-            }
-            if ($otherClassMetadata->getRelationship($mappedBy)->isCollection()) {
-                if (null === $property->getValue($otherInstance)) {
-                    $mt = $otherClassMetadata->getRelationship($mappedBy);
-                    $lazy = new LazyRelationshipCollection($this->entityManager, $otherInstance, $mt->getTargetEntity(), $mt, $baseInstance);
-                    $property->setValue($otherInstance, $lazy);
-                } else {
-                    $property->getValue($otherInstance)->addInit($baseInstance);
-                }
-            } else {
-                $property->setValue($otherInstance, $baseInstance);
-            }
-        }
     }
 
     /**

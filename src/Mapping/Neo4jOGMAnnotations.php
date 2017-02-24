@@ -10,6 +10,7 @@
  */
 
 require_once __DIR__.'/../Annotations/EndNode.php';
+require_once __DIR__.'/../Annotations/Fetch.php';
 require_once __DIR__.'/../Annotations/GraphId.php';
 require_once __DIR__.'/../Annotations/Label.php';
 require_once __DIR__.'/../Annotations/Lazy.php';

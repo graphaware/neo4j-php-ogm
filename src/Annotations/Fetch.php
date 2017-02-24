@@ -9,16 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace GraphAware\Neo4j\OGM\Tests\Lazy;
+namespace GraphAware\Neo4j\OGM\Annotations;
+
+use Doctrine\Common\Annotations\Annotation\Attribute;
+use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
- * Class LazyRelationshipCollectionTest.
- *
- * @group lazy
+ * @Annotation
+ * @Target({"PROPERTY"})
  */
-class LazyRelationshipCollectionTest extends \PHPUnit_Framework_TestCase
-{
-    public function testInit()
-    {
-    }
-}
+class Fetch {}

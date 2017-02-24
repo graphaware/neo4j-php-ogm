@@ -47,6 +47,11 @@ final class RelationshipMetadata
     private $isLazy;
 
     /**
+     * @var bool
+     */
+    private $isFetch;
+
+    /**
      * @var OrderBy
      */
     private $orderBy;
@@ -58,13 +63,14 @@ final class RelationshipMetadata
      * @param bool                                           $isLazy
      * @param OrderBy                                        $orderBy
      */
-    public function __construct($className, \ReflectionProperty $reflectionProperty, Relationship $relationshipAnnotation, $isLazy = false, OrderBy $orderBy = null)
+    public function __construct($className, \ReflectionProperty $reflectionProperty, Relationship $relationshipAnnotation, $isLazy = false, $isFetch = false, OrderBy $orderBy = null)
     {
         $this->className = $className;
         $this->propertyName = $reflectionProperty->getName();
         $this->reflectionProperty = $reflectionProperty;
         $this->relationshipAnnotation = $relationshipAnnotation;
         $this->isLazy = $isLazy;
+        $this->isFetch = $isFetch;
         $this->orderBy = $orderBy;
         if (null !== $orderBy) {
             if (!in_array($orderBy->order, ['ASC', 'DESC'], true)) {
@@ -118,11 +124,15 @@ final class RelationshipMetadata
      */
     public function isLazy()
     {
-        if (!$this->isCollection()) {
-            return false;
-        }
-
         return $this->isLazy;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFetch()
+    {
+        return $this->isFetch;
     }
 
     /**

@@ -84,4 +84,12 @@ class Movie
     {
         return $this->players;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getActors()
+    {
+        return $this->actors;
+    }
 }

@@ -118,7 +118,8 @@ class RelationshipIntegrationTest extends IntegrationTestCase
                 $ikwattro->getFriends()->removeElement($friend);
             }
         }
-        $this->assertCount(1, $ikwattro->getFriends());
+        $friends = $ikwattro->getFriends();
+        $this->assertCount(1, $friends);
         $this->em->flush();
         $this->assertGraphNotExist('(u:User {login:"ikwattro"})-[r:FOLLOWS]->(o:User {login:"jexp"})');
     }
@@ -133,7 +134,7 @@ class RelationshipIntegrationTest extends IntegrationTestCase
         /** @var Movie $movie */
         $movie = $this->em->getRepository(Movie::class)->findOneById($id);
         $this->assertEquals($id, $movie->id);
-        foreach ($movie->actors as $actor) {
+        foreach ($movie->getActors() as $actor) {
             $this->assertInstanceOf(Person::class, $actor);
         }
     }

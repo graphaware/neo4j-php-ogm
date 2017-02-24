@@ -33,15 +33,17 @@ class IntegrationTestCase extends \PHPUnit_Framework_TestCase
 
     private function createEntityManager()
     {
-        $this->em = EntityManager::create(
-            sprintf(
+        $uri = isset($_ENV['NEO4J_USER'])
+            ? sprintf(
                 '%s://%s:%s@%s:%s',
                 getenv('NEO4J_SCHEMA'),
                 getenv('NEO4J_USER'),
                 getenv('NEO4J_PASSWORD'),
                 getenv('NEO4J_HOST'),
                 getenv('NEO4J_PORT')
-            ),
+            ) : 'http://localhost:7474';
+        $this->em = EntityManager::create(
+            $uri,
             __DIR__.'/../../_var/cache'
         );
     }

@@ -438,6 +438,7 @@ class UnitOfWork
     public function detectRelationshipReferenceChanges()
     {
         foreach ($this->managedRelationshipReferences as $oid => $reference) {
+            //var_dump($oid);
             $entity = $this->entitiesById[$this->entityIds[$oid]];
             $reflO = $this->entityManager->getClassMetadataFor(get_class($entity));
             foreach ($reference as $field => $info) {

@@ -171,6 +171,22 @@ final class NodeEntityMetadata extends GraphEntityMetadata
     }
 
     /**
+     * @param bool $andRelationshipEntities
+     * @return RelationshipMetadata[]
+     */
+    public function getFetchRelationships($andRelationshipEntities = false)
+    {
+        $rels = [];
+        foreach ($this->relationships as $relationship) {
+            if ($relationship->isFetch() && !$relationship->isRelationshipEntity()) {
+                $rels[] = $relationship;
+            }
+        }
+
+        return $rels;
+    }
+
+    /**
      * @param $key
      *
      * @return \GraphAware\Neo4j\OGM\Metadata\RelationshipMetadata
@@ -295,5 +311,17 @@ final class NodeEntityMetadata extends GraphEntityMetadata
         }
 
         return null;
+    }
+
+    public function getMappedByFieldsForFetch()
+    {
+        $fields = [];
+        foreach ($this->getFetchRelationships() as $relationship) {
+            if ($relationship->hasMappedByProperty()) {
+                $fields[] = $relationship->getMappedByProperty();
+            }
+        }
+
+        return $fields;
     }
 }

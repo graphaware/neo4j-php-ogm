@@ -32,6 +32,7 @@ class Tweeto
 
     /**
      * @OGM\Relationship(targetEntity="Tweeto", type="FOLLOWS", direction="OUTGOING")
+     * @OGM\Fetch()
      *
      * @var Tweeto
      */

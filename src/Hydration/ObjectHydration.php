@@ -10,8 +10,7 @@
  * file that was distributed with this source code.
  */
 
-
-namespace GraphAware\Neo4j\OGM\Repository;
+namespace GraphAware\Neo4j\OGM\Hydration;
 
 use GraphAware\Common\Result\Record;
 use GraphAware\Common\Result\Result;
@@ -25,14 +24,8 @@ use GraphAware\Neo4j\OGM\Metadata\NodeEntityMetadata;
 use GraphAware\Neo4j\OGM\Metadata\QueryResultMapper;
 use GraphAware\Neo4j\OGM\Metadata\RelationshipEntityMetadata;
 use GraphAware\Neo4j\OGM\Metadata\RelationshipMetadata;
-use GraphAware\Neo4j\OGM\Query\Pagination;
-use GraphAware\Neo4j\OGM\Query\QueryResultMapping;
 use GraphAware\Neo4j\OGM\Util\ClassUtils;
 use GraphAware\Neo4j\OGM\Util\ProxyUtils;
-use ProxyManager\Configuration;
-use ProxyManager\Factory\LazyLoadingGhostFactory;
-use ProxyManager\FileLocator\FileLocator;
-use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\Version;
 
 
@@ -57,11 +50,20 @@ class ObjectHydration
     private $entityManager;
 
     /**
+     * @var string
+     */
+    private $className;
+
+    private $classMetadata;
+
+    /**
      *
      * @param EntityManager $entityManager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct($className, EntityManager $entityManager)
     {
+        $this->className = $className;
+        $this->classMetadata = $entityManager->getClassMetadataFor($className);
         $this->entityManager = $entityManager;
     }
 
@@ -74,7 +76,7 @@ class ObjectHydration
         $identifier = isset($options[self::OPTION_IDENTIFIER]) ? $options[self::OPTION_IDENTIFIER] : 'n';
 
         // getNodeBaseInstance
-        $classMeta = $this->entityManager->getClassMetadataFor($record);
+        $classMeta = $this->entityManager->getClassMetadataFor($this->className);
         $classN = $classMeta->getClassName();
         $baseInstance = $this->hydrateNode($record->get($identifier), $classN, $refresh);
         $cm = $this->entityManager->getClassMetadataFor($classN);
@@ -185,6 +187,11 @@ class ObjectHydration
         return $baseInstance;
     }
 
+    private function setInversedAssociation($a, $b, $c)
+    {
+        $this->entityManager->getRepository($this->className)->setInversedAssociation($a, $b, $c);
+    }
+
     private function hydrateRelationshipEntity(
         RelationshipEntityMetadata $reMetadata,
         array $reMap,
@@ -236,7 +243,7 @@ class ObjectHydration
 
     private function getHydrator($target)
     {
-        return $this->entityManager->getRepository($target);
+        return $this->entityManager->getHydrator($target);
     }
 
     private function hydrateNodeAndProxy(Node $node, $className = null)
@@ -379,6 +386,8 @@ class ObjectHydration
             $instance = $cm->newInstance();
         }
 
+        $instance = $this->entityManager->getProxyFactory($this->classMetadata)->fromNode($node);
+
         $this->populateDataToInstance($node, $cm, $instance);
 
         $this->entityManager->getUnitOfWork()->addManaged($instance);
@@ -463,7 +472,7 @@ class ObjectHydration
      * @param NodeEntityMetadata $cm
      * @param object$instance
      */
-    private function populateDataToInstance(Node $node, $cm, $instance)
+    public function populateDataToInstance(Node $node, $cm, $instance)
     {
         foreach ($cm->getPropertiesMetadata() as $field => $meta) {
             if ($meta instanceof EntityPropertyMetadata) {

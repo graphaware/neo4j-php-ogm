@@ -11,6 +11,7 @@
 
 namespace GraphAware\Neo4j\OGM\Tests\Integration;
 
+use GraphAware\Neo4j\OGM\Proxy\EntityProxy;
 use GraphAware\Neo4j\OGM\Tests\Integration\Model\AuthUser;
 use GraphAware\Neo4j\OGM\Tests\Integration\Model\Movie;
 use GraphAware\Neo4j\OGM\Tests\Integration\Model\User;
@@ -205,4 +206,16 @@ class SingleEntityTest extends IntegrationTestCase
         $this->setExpectedException(LogicException::class);
         $this->em->persist($user);
     }
+
+    public function testFindEntitiesWithFindAll()
+    {
+        $this->clearDb();
+        $this->playMovies();
+        /** @var Movie[] $movies */
+        $movies = $this->em->getRepository(Movie::class)->findAll();
+        $this->assertCount(38, $movies);
+        $this->assertInstanceOf(EntityProxy::class, $movies[0]->getActors()[0]);
+    }
+
+
 }
