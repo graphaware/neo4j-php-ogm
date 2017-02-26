@@ -16,12 +16,14 @@ class Movie
 
     /**
      * @OGM\Property(type="string",nullable=true)
+     *
      * @var string
      */
     private $name;
 
     /**
      * @OGM\Relationship(type="ACTED_IN", direction="OUTGOING", targetEntity="Person", collection=true)
+     *
      * @var Person[]
      */
     private $actors;

@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration\Models\EntityWithSimpleRelation
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * Class ModelNumber
+ * Class ModelNumber.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\EntityWithSimpleRelationship
  *
  * @OGM\Node(label="ModelNumber")

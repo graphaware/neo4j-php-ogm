@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration\Models\SimpleRelationshipEntity
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * Class Hotel
+ * Class Hotel.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\SimpleRelationshipEntity
  *
  * @OGM\Node(label="Hotel")
@@ -77,5 +78,4 @@ class Hotel
     {
         $this->rating = $rating;
     }
-
 }

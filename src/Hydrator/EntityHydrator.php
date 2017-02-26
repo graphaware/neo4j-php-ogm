@@ -186,7 +186,7 @@ class EntityHydrator
         /** @var RelationshipEntityMetadata $relationshipEntityMetadata */
         $relationshipEntityMetadata = $this->_em->getClassMetadataFor($relationshipMetadata->getRelationshipEntityClass());
         $inversedSide = $relationshipEntityMetadata->getOtherClassNameForOwningClass($this->_classMetadata->getClassName());
-        /** @todo will not work for Direction.BOTH */
+        /* @todo will not work for Direction.BOTH */
         return $inversedSide;
     }
 

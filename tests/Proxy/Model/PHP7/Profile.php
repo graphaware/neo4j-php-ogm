@@ -30,6 +30,7 @@ class Profile
 
     /**
      * Profile constructor.
+     *
      * @param string $email
      */
     public function __construct($email)

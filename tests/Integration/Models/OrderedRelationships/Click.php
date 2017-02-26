@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration\Models\OrderedRelationships;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * Class Click
+ * Class Click.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\OrderedRelationships
  *
  * @OGM\Node(label="Click")

@@ -31,7 +31,7 @@ class ProxyFactory
         $this->proxyDir = $em->getProxyDirectory();
     }
 
-    public function fromNode(Node $node, array $mappedByProperties = array())
+    public function fromNode(Node $node, array $mappedByProperties = [])
     {
         $object = $this->createProxy();
         $object->__setNode($node);

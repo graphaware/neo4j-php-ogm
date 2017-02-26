@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration;
 use GraphAware\Neo4j\OGM\Tests\Integration\Models\BooleanLabel\BlogPost;
 
 /**
- * Class BooleanLabelTest
+ * Class BooleanLabelTest.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration
  *
  * @group label-it

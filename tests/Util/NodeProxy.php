@@ -67,5 +67,4 @@ class NodeProxy implements Node
     {
         // TODO: Implement hasLabel() method.
     }
-
 }

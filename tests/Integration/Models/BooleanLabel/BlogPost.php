@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration\Models\BooleanLabel;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * Class BlogPost
+ * Class BlogPost.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\BooleanLabel
  *
  * @OGM\Node(label="BlogPost")

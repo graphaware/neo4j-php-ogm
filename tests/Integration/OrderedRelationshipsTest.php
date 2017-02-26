@@ -6,7 +6,8 @@ use GraphAware\Neo4j\OGM\Tests\Integration\Models\OrderedRelationships\Click;
 use GraphAware\Neo4j\OGM\Tests\Integration\Models\OrderedRelationships\Item;
 
 /**
- * Class OrderedRelationshipsTest
+ * Class OrderedRelationshipsTest.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration
  *
  * @group rel-order-by
@@ -28,7 +29,7 @@ class OrderedRelationshipsTest extends IntegrationTestCase
         $it = $this->em->getRepository(Item::class)->findAll()[0];
 
         for ($i = 1; $i <= 100; ++$i) {
-            $this->assertEquals($i, $it->getClicks()[$i-1]->getTime());
+            $this->assertEquals($i, $it->getClicks()[$i - 1]->getTime());
         }
     }
 }

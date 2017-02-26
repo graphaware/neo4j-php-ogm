@@ -6,5 +6,4 @@ use GraphAware\Neo4j\OGM\Repository\BaseRepository;
 
 class MovieRepository extends BaseRepository
 {
-
 }

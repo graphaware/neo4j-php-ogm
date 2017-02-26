@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration\Models\RelationshipCollection;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * Class Floor
+ * Class Floor.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\RelationshipCollection
  *
  * @OGM\Node(label="Floor")
@@ -69,6 +70,4 @@ class Floor
     {
         return $this->building;
     }
-
-
 }

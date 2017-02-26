@@ -6,7 +6,8 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 use GraphAware\Neo4j\OGM\Common\Collection;
 
 /**
- * Class User
+ * Class User.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\ManyToManyRelationship
  *
  * @OGM\Node(label="User")

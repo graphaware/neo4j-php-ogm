@@ -5,7 +5,6 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration;
 use GraphAware\Neo4j\OGM\Tests\Integration\Models\SingleEntity\User;
 
 /**
- *
  * @group single-entity
  */
 class SingleEntityIntegrationTest extends IntegrationTestCase

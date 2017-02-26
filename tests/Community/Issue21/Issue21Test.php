@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Community\Issue21;
 use GraphAware\Neo4j\OGM\Tests\Integration\IntegrationTestCase;
 
 /**
- * Class Issue21Test
+ * Class Issue21Test.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Community\Issue21
  *
  * @group issue21

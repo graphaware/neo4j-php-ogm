@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration\Models\SimpleRelationshipEntity
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * Class Rating
+ * Class Rating.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\SimpleRelationshipEntity
  *
  * @OGM\RelationshipEntity(type="RATED")
@@ -107,6 +108,4 @@ class Rating
     {
         $this->score = $score;
     }
-
-
 }

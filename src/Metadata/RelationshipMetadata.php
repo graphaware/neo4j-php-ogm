@@ -288,7 +288,7 @@ final class RelationshipMetadata
      */
     public function getAlias()
     {
-        /** @todo find another fixed string for query caching */
+        /* @todo find another fixed string for query caching */
         return strtolower(sprintf('%s_%s', $this->propertyName, spl_object_hash($this)));
     }
 }

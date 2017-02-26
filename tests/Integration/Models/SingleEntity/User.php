@@ -5,7 +5,6 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration\Models\SingleEntity;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- *
  * @OGM\Node(label="User")
  */
 class User

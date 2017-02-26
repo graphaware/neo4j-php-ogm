@@ -2,13 +2,10 @@
 
 namespace GraphAware\Neo4j\OGM\Tests\Proxy;
 
-use GraphAware\Neo4j\OGM\Proxy\SingleNodeInitializer;
 use GraphAware\Neo4j\OGM\Tests\Integration\IntegrationTestCase;
-use GraphAware\Neo4j\OGM\Tests\Util\NodeProxy;
 
 class SingleNodeInitializerTest extends IntegrationTestCase
 {
-
     public function testProxyIsReturnedWhenCalledFromRepository()
     {
         $this->clearDb();

@@ -746,7 +746,7 @@ class UnitOfWork
      */
     public function detach($entity)
     {
-        $visited = array();
+        $visited = [];
 
         $this->doDetach($entity, $visited);
     }
@@ -832,7 +832,7 @@ class UnitOfWork
      */
     public function refresh($entity)
     {
-        $visited = array();
+        $visited = [];
 
         $this->doRefresh($entity, $visited);
     }
@@ -1032,7 +1032,7 @@ class UnitOfWork
     private function newInstance(NodeEntityMetadata $class, Node $node)
     {
         $proxyFactory = $this->entityManager->getProxyFactory($class);
-        /** @todo make possible to instantiate proxy without the node object */
+        /* @todo make possible to instantiate proxy without the node object */
         return $proxyFactory->fromNode($node);
     }
 

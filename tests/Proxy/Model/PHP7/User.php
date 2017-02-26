@@ -32,6 +32,7 @@ class User
 
     /**
      * User constructor.
+     *
      * @param string $login
      */
     public function __construct(string $login)

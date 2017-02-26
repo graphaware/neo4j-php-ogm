@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration;
 use GraphAware\Neo4j\OGM\Tests\Integration\Models\Base\User;
 
 /**
- * Class RepositoryFindByTest
+ * Class RepositoryFindByTest.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration
  *
  * @group repository-find-by
@@ -58,5 +59,4 @@ class RepositoryFindByTest extends IntegrationTestCase
         $this->setExpectedException(\LogicException::class);
         $user = $this->em->getRepository(User::class)->findOneBy(['login' => 'user1']);
     }
-
 }

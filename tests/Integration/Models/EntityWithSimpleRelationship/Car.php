@@ -4,9 +4,9 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration\Models\EntityWithSimpleRelation
 
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
-
 /**
- * Class Car
+ * Class Car.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\EntityWithSimpleRelationship
  *
  * @OGM\Node(label="Car")
@@ -94,8 +94,4 @@ class Car
     {
         $this->modelNumber = $modelNumber;
     }
-
-
-
-
 }

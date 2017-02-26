@@ -6,7 +6,8 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 use GraphAware\Neo4j\OGM\Common\Collection;
 
 /**
- * Class Person
+ * Class Person.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\MoviesDemo
  *
  * @OGM\Node(label="Person")

@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration\Models\OneToManyRE;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * Class House
+ * Class House.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\OneToManyRE
  *
  * @OGM\Node(label="House")

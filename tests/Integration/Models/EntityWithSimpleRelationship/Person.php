@@ -5,7 +5,8 @@ namespace GraphAware\Neo4j\OGM\Tests\Integration\Models\EntityWithSimpleRelation
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * Class Person
+ * Class Person.
+ *
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\EntityWithSimpleRelationship
  *
  * @OGM\Node(label="Person")
@@ -70,8 +71,6 @@ class Person
         $this->name = $name;
     }
 
-
-
     /**
      * @param Car $car
      */
@@ -79,6 +78,4 @@ class Person
     {
         $this->car = $car;
     }
-
-
 }
