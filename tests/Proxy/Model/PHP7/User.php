@@ -1,0 +1,76 @@
+<?php
+
+namespace GraphAware\Neo4j\OGM\Tests\Proxy\Model\PHP7;
+
+use GraphAware\Neo4j\OGM\Annotations as OGM;
+
+/**
+ * @OGM\Node(label="User")
+ */
+class User
+{
+    /**
+     * @var int
+     *
+     * @OGM\GraphId()
+     */
+    protected $id;
+
+    /**
+     * @var string
+     *
+     * @OGM\Property(type="string")
+     */
+    protected $login;
+
+    /**
+     * @var Profile
+     *
+     * @OGM\Relationship(type="HAS_PROFILE", direction="OUTGOING", targetEntity="Profile", mappedBy="user")
+     */
+    protected $profile;
+
+    /**
+     * User constructor.
+     * @param string $login
+     */
+    public function __construct(string $login)
+    {
+        $this->login = $login;
+        $this->profile = new Profile($login.'@graphaware.com');
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogin(): string
+    {
+        return $this->login;
+    }
+
+    /**
+     * @param string $login
+     *
+     * @return User
+     */
+    public function setLogin(string $login)
+    {
+        $this->login = $login;
+    }
+
+    /**
+     * @return Profile
+     */
+    public function getProfile(): Profile
+    {
+        return $this->profile;
+    }
+}

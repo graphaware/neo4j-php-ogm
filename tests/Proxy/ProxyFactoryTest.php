@@ -4,6 +4,7 @@ namespace GraphAware\Neo4j\OGM\Tests\Proxy;
 
 use GraphAware\Neo4j\OGM\Proxy\ProxyFactory;
 use GraphAware\Neo4j\OGM\Tests\Integration\IntegrationTestCase;
+use GraphAware\Neo4j\OGM\Tests\Proxy\Model\PHP7\User;
 use GraphAware\Neo4j\OGM\Tests\Util\NodeProxy;
 use GraphAware\Neo4j\OGM\Proxy\EntityProxy;
 
@@ -46,6 +47,21 @@ class ProxyFactoryTest extends IntegrationTestCase
         $this->assertInstanceOf(Init::class, $init->getRelation()->getInit());
         $this->assertEquals(spl_object_hash($init), spl_object_hash($init->getRelation()->getInit()));
     }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testPhp7ProxyCreation()
+    {
+        $cm = $this->em->getClassMetadata(User::class);
+        $factory = new ProxyFactory($this->em, $cm);
+        $id = $this->client->run('CREATE (u:User {login:"Ale"})-[:HAS_PROFILE]->(:Profile {email:"php@graphaware.com"}) RETURN id(u) AS id')->firstRecord()->get('id');
+        $o = $factory->fromNode(new NodeProxy($id));
+
+        $this->assertInstanceOf(User::class, $o);
+        $this->assertInstanceOf(EntityProxy::class, $o);
+    }
+
 
     private function createSmallGraph()
     {
