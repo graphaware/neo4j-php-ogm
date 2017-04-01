@@ -14,6 +14,7 @@ namespace GraphAware\Neo4j\OGM\Persister;
 use GraphAware\Common\Cypher\Statement;
 use GraphAware\Neo4j\OGM\EntityManager;
 use GraphAware\Neo4j\OGM\Metadata\NodeEntityMetadata;
+use GraphAware\Neo4j\OGM\Util\Converters\PropertyConverterFactory;
 
 class EntityPersister
 {
@@ -39,14 +40,19 @@ class EntityPersister
         $this->entityManager = $entityManager;
     }
 
+    private function getObjectPropertyValues($object) : array{
+        foreach ($this->classMetadata->getPropertiesMetadata() as $field => $meta) {
+            $converter = PropertyConverterFactory::getConverter($meta->getPropertyAnnotationMetadata()->getType());
+            $propertyValues[$field] = ($converter) ? $converter->getDbValue($meta->getValue($object))
+                : $meta->getValue($object);
+        }
+    }
+
     public function getCreateQuery($object)
     {
-        $propertyValues = [];
         $extraLabels = [];
         $removeLabels = [];
-        foreach ($this->classMetadata->getPropertiesMetadata() as $field => $meta) {
-            $propertyValues[$field] = $meta->getValue($object);
-        }
+        $propertyValues = $this->getObjectPropertyValues($object);
 
         foreach ($this->classMetadata->getLabeledProperties() as $labeledProperty) {
             if ($labeledProperty->isLabelSet($object)) {
@@ -75,12 +81,9 @@ class EntityPersister
 
     public function getUpdateQuery($object)
     {
-        $propertyValues = [];
         $extraLabels = [];
         $removeLabels = [];
-        foreach ($this->classMetadata->getPropertiesMetadata() as $field => $meta) {
-            $propertyValues[$field] = $meta->getValue($object);
-        }
+        $propertyValues = $this->getObjectPropertyValues($object);
 
         foreach ($this->classMetadata->getLabeledProperties() as $labeledProperty) {
             if ($labeledProperty->isLabelSet($object)) {
