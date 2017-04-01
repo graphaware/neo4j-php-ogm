@@ -1,11 +1,7 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: Sobraz
- * Date: 01/04/2017
- * Time: 15:44
- */
+namespace GraphAware\Neo4j\OGM\Util\Converters;
+
 class DateTimeTimestampConverter extends PropertyConverter
 {
 
