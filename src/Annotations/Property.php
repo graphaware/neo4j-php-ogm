@@ -21,7 +21,7 @@ final class Property
 {
     /**
      * @var string
-     * @Enum({"string","boolean","array","int","float"})
+     * @Enum({"string","boolean","array","int","float","datetime"})
      */
     public $type;
 
