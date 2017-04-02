@@ -18,8 +18,8 @@ class DateTimeTimestampConverter extends PropertyConverter
         return $datetime;
     }
 
-    protected static function getPropertyEntityType() : string
+    protected function getPropertyEntityType() : string
     {
-        return "\\DateTime";
+        return \DateTime::class;
     }
 }

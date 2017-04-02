@@ -41,11 +41,13 @@ class EntityPersister
     }
 
     private function getObjectPropertyValues($object) : array{
+        $propertyValues = [];
         foreach ($this->classMetadata->getPropertiesMetadata() as $field => $meta) {
             $converter = PropertyConverterFactory::getConverter($meta->getPropertyAnnotationMetadata()->getType());
             $propertyValues[$field] = ($converter) ? $converter->getDbValue($meta->getValue($object))
                 : $meta->getValue($object);
         }
+        return $propertyValues;
     }
 
     public function getCreateQuery($object)

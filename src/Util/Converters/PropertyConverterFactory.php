@@ -6,10 +6,10 @@ class PropertyConverterFactory
 {
 
     private static $converters = [
-        "datetime" => "clazz"
+        "datetime" => DateTimeTimestampConverter::class
     ];
 
-    public static function getConverter($type) : PropertyConverter
+    public static function getConverter($type)
     {
         if (!array_key_exists($type, self::$converters))
             return null;
