@@ -19,6 +19,7 @@ use GraphAware\Neo4j\OGM\Common\Collection;
 use GraphAware\Neo4j\OGM\EntityManager;
 use GraphAware\Neo4j\OGM\Metadata\NodeEntityMetadata;
 use GraphAware\Neo4j\OGM\Metadata\RelationshipEntityMetadata;
+use GraphAware\Neo4j\OGM\Util\Converters\PropertyConverterFactory;
 
 class EntityHydrator
 {
@@ -248,7 +249,9 @@ class EntityHydrator
         foreach ($node->keys() as $key) {
             if ($this->_classMetadata->hasField($key)) {
                 $propertyMeta = $this->_classMetadata->getPropertyMetadata($key);
-                $propertyMeta->setValue($object, $node->get($key));
+                $converter = PropertyConverterFactory::getConverter($propertyMeta->getPropertyAnnotationMetadata()->getType());
+                $propertyValue = $converter ? $converter->getEntytiValue($node->get($key)) : $node->get($key);
+                $propertyMeta->setValue($object, $propertyValue);
             }
         }
     }
