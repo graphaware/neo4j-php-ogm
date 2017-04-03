@@ -22,5 +22,5 @@ abstract  class PropertyConverter
 
     protected abstract function convertToDbValue($entityValue);
     protected abstract function convertToPropertyEnttityValue($dbvalue);
-    protected abstract function getPropertyEntityType() : string;
+    protected abstract function getPropertyEntityType();
 }

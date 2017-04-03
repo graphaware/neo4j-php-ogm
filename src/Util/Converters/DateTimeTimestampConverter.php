@@ -18,7 +18,7 @@ class DateTimeTimestampConverter extends PropertyConverter
         return $datetime;
     }
 
-    protected function getPropertyEntityType() : string
+    protected function getPropertyEntityType()
     {
         return \DateTime::class;
     }

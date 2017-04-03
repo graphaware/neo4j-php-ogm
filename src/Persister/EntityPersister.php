@@ -40,7 +40,7 @@ class EntityPersister
         $this->entityManager = $entityManager;
     }
 
-    private function getObjectPropertyValues($object) : array{
+    private function getObjectPropertyValues($object){
         $propertyValues = [];
         foreach ($this->classMetadata->getPropertiesMetadata() as $field => $meta) {
             $converter = PropertyConverterFactory::getConverter($meta->getPropertyAnnotationMetadata()->getType());
