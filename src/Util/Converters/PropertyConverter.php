@@ -2,6 +2,8 @@
 
 namespace GraphAware\Neo4j\OGM\Util\Converters;
 
+use InvalidArgumentException;
+
 abstract  class PropertyConverter
 {
 
