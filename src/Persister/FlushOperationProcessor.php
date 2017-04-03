@@ -59,6 +59,7 @@ class FlushOperationProcessor
 
                 $query .= ' RETURN id(n) as id, node.oid as oid';
                 $statements[$lblKey]['query'] = $query;
+                $convertedPropertyValues = [];
                 foreach($metadata->getPropertyValuesArray($entity) as $key => $prop)
                 {
                     $converter = PropertyConverterFactory::getConverter(
