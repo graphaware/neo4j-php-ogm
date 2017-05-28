@@ -88,7 +88,7 @@ class EntityManager implements EntityManagerInterface
     protected $entityPersisters = [];
 
     public function __construct(
-        ClientInterface $databaseDriver,
+        $databaseDriver,
         $cacheDirectory = null,
         EventManager $eventManager = null,
         GraphEntityMetadataFactoryInterface $metadataFactory = null
