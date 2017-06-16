@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<graphaware-mapping xmlns="http://graphaware.com/schemas/ogm/graphaware-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://graphaware.com/schemas/ogm/graphaware-mapping http://graphaware.com/schemas/ogm/graphaware-mapping.xsd">
+    <node label="Movie"
+          entity="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\Movie"
+          repository-class="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\MovieRepository">
+        <id name="id"/>
+        <property name="name" type="string" nullable="true"/>
+        <relationship name="actors" type="ACTED_IN" direction="OUTGOING" target-entity="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\Person" collection="true"/>
+    </node>
+</graphaware-mapping>

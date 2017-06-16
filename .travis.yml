@@ -1,0 +1,25 @@
+language: php
+sudo: false
+php:
+    - 5.6
+    - 7.0.12
+    - 7.1
+
+env:
+  - NEO_VERSION="2.3.4"
+
+before_install:
+    - wget dist.neo4j.org/neo4j-enterprise-$NEO_VERSION-unix.tar.gz > null
+    - tar -xzf neo4j-enterprise-$NEO_VERSION-unix.tar.gz > null
+    - sed -i.bak 's/^\(dbms\.security\.auth_enabled=\).*/\1false/' neo4j-enterprise-$NEO_VERSION/conf/neo4j-server.properties
+    - neo4j-enterprise-$NEO_VERSION/bin/neo4j start > null
+    - composer self-update
+
+before_script:
+    - composer install --prefer-dist --no-interaction
+
+script:
+    - vendor/bin/phpunit --exclude-group xml-mapping
+
+notifications:
+    email: "christophe@graphaware.com"

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<graphaware-mapping xmlns="http://graphaware.com/schemas/ogm/graphaware-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://graphaware.com/schemas/ogm/graphaware-mapping http://graphaware.com/schemas/ogm/graphaware-mapping.xsd">
+    <relationship type="RATED" entity="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\Rating">
+        <id name="id"/>
+        <start-node name="person" target-entity="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\Person"/>
+        <end-node name="movie" target-entity="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\Movie"/>
+        <property name="score" type="float"/>
+    </relationship>
+</graphaware-mapping>

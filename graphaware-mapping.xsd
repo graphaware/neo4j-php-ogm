@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="qualified"
+           targetNamespace="http://graphaware.com/schemas/ogm/graphaware-mapping"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ogm="http://graphaware.com/schemas/ogm/graphaware-mapping">
+    <xs:element name="graphaware-mapping" type="ogm:graphaware-mappingType"/>
+    <xs:complexType name="idType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="propertyType" mixed="true">
+        <xs:sequence>
+            <xs:element type="ogm:labelType" name="label" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="ogm:property-type-types" name="type" use="required"/>
+        <xs:attribute type="xs:boolean" name="nullable" use="optional" default="true"/>
+    </xs:complexType>
+    <xs:simpleType name="property-type-types">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="string"/>
+            <xs:enumeration value="boolean"/>
+            <xs:enumeration value="array"/>
+            <xs:enumeration value="int"/>
+            <xs:enumeration value="float"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="relationshipType" mixed="true">
+        <xs:sequence>
+            <xs:element type="xs:string" name="lazy" minOccurs="0"/>
+            <xs:element type="ogm:order-byType" name="order-by" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="ogm:relationship-directions" name="direction" use="required"/>
+        <xs:attribute type="xs:string" name="target-entity" use="required"/>
+        <xs:attribute type="xs:string" name="collection" use="optional"/>
+        <xs:attribute type="xs:string" name="mapped-by" use="optional"/>
+    </xs:complexType>
+    <xs:simpleType name="relationship-directions">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="OUTGOING"/>
+            <xs:enumeration value="INCOMING"/>
+            <xs:enumeration value="BOTH"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="relationshipEntityType" mixed="true">
+        <xs:sequence>
+            <xs:element type="ogm:idType" name="id" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="ogm:start-nodeType" name="start-node" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="ogm:end-nodeType" name="end-node" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="ogm:propertyType" name="property" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="required"/>
+        <xs:attribute type="xs:string" name="entity" use="required"/>
+        <xs:attribute type="ogm:relationship-entity-directions" name="direction" use="optional"/>
+    </xs:complexType>
+    <xs:simpleType name="relationship-entity-directions">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="OUTGOING"/>
+            <xs:enumeration value="INCOMING"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="nodeEntityType">
+        <xs:sequence>
+            <xs:element type="ogm:idType" name="id" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="ogm:propertyType" name="property" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ogm:relationshipType" name="relationship" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="label" use="required"/>
+        <xs:attribute type="xs:string" name="entity" use="required"/>
+        <xs:attribute type="xs:string" name="repository-class" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="labelType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="order-byType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="property" use="required"/>
+                <xs:attribute type="ogm:order-by-direction" name="order" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:simpleType name="order-by-direction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ASC"/>
+            <xs:enumeration value="DESC"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="start-nodeType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name" use="required"/>
+                <xs:attribute type="xs:string" name="target-entity" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="end-nodeType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name" use="required"/>
+                <xs:attribute type="xs:string" name="target-entity" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="graphaware-mappingType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element type="ogm:nodeEntityType" name="node" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element type="ogm:relationshipEntityType" name="relationship" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

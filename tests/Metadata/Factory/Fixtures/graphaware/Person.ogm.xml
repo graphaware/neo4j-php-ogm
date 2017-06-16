@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<graphaware-mapping xmlns="http://graphaware.com/schemas/ogm/graphaware-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://graphaware.com/schemas/ogm/graphaware-mapping http://graphaware.com/schemas/ogm/graphaware-mapping.xsd">
+    <node label="Person" entity="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\Person">
+        <id name="id"/>
+        <property name="name" type="string"/>
+        <property name="age" type="int" nullable="false">
+            <label name="my-age"/>
+        </property>
+        <relationship name="movies" type="ACTED_IN" direction="OUTGOING" target-entity="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\Movie" collection="true" mapped-by="actors">
+            <lazy/>
+            <order-by property="name" order="DESC"/>
+        </relationship>
+    </node>
+</graphaware-mapping>
