@@ -1,6 +1,6 @@
 {
     "name": "graphaware/neo4j-php-ogm",
-    "description": "PHP Object Graph Mapper for Neo4j FORK",
+    "description": "PHP Object Graph Mapper for Neo4j",
     "license": "Apache V2",
     "keywords": [
         "neo4j",
