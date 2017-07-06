@@ -258,7 +258,8 @@ class BasicEntityPersister
     private function getMatchOneByIdCypher($id)
     {
         $identifier = $this->_classMetadata->getEntityAlias();
-        $cypher = 'MATCH ('.$identifier.') WHERE id('.$identifier.') = {id} RETURN '.$identifier;
+        $label = $this->_classMetadata->getLabel();
+        $cypher = 'MATCH ('.$identifier.':`'.$label.'`) WHERE id('.$identifier.') = {id} RETURN '.$identifier;
         $params = ['id' => (int) $id];
 
         return Statement::create($cypher, $params);

@@ -1,3 +1,7 @@
+1.0.0-RC6 (not released yet)
+
+- Fixed a bug where findOneById was not checking class label in query ([#136](https://github.com/graphaware/neo4j-php-ogm/pull/136))
+
 1.0.0-RC5 (2017-04-15)
 
 - Added support for Map and Map Collections in `createQuery` result sets ([#131](https://github.com/graphaware/neo4j-php-ogm/pull/131))

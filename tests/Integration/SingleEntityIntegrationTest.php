@@ -61,4 +61,22 @@ class SingleEntityIntegrationTest extends IntegrationTestCase
         $result = $this->client->run('MATCH (n:User) WHERE n.login = "jexp2" RETURN n');
         $this->assertSame(1, $result->size());
     }
+
+    public function testFindOneByIdShouldNotReturnIfNodeDoesntMatchLabel()
+    {
+        $this->clearDb();
+        $id = $this->client->run('CREATE (n:NonUser {login:"me"}) RETURN id(n) AS id')->firstRecord()->get('id');
+
+        $user = $this->em->getRepository(User::class)->findOneById($id);
+        $this->assertNull($user);
+    }
+
+    public function testFindOneByIdReturnEntityWhenLabelMatch()
+    {
+        $this->clearDb();
+        $id = $this->client->run('CREATE (n:User {login:"me"}) RETURN id(n) AS id')->firstRecord()->get('id');
+
+        $user = $this->em->getRepository(User::class)->findOneById($id);
+        $this->assertInstanceOf(User::class, $user);
+    }
 }
