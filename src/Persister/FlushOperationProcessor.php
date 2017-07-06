@@ -45,7 +45,7 @@ class FlushOperationProcessor
         foreach ($byLabelsMap as $label => $entities) {
             foreach ($entities as $entity) {
                 $query = sprintf('UNWIND {nodes} as node
-                CREATE (n:`%s`) SET n += node.props', $label);
+                CREATE (n:%s) SET n += node.props', $label);
                 $metadata = $this->em->getClassMetadataFor(get_class($entity));
                 $oid = spl_object_hash($entity);
                 $labeledProperties = $metadata->getLabeledPropertiesToBeSet($entity);
@@ -54,7 +54,7 @@ class FlushOperationProcessor
                 }, $labeledProperties)));
 
                 foreach ($labeledProperties as $labeledPropertyMetadata) {
-                    $query .= sprintf(' SET n:`%s`', $labeledPropertyMetadata->getLabelName());
+                    $query .= sprintf(' SET n:%sb  ', $labeledPropertyMetadata->getLabelName());
                 }
 
                 $query .= ' RETURN id(n) as id, node.oid as oid';
