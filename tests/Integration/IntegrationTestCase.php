@@ -66,12 +66,12 @@ class IntegrationTestCase extends \PHPUnit_Framework_TestCase
 
     protected function assertGraphNotExist($q)
     {
-        $this->assertTrue($this->checkGraph($q)->size() < 1);
+        $this->assertTrue($this->checkGraph($q)->size() < 1, "Failed asserting that the following graph does not exist: $q");
     }
 
     protected function assertGraphExist($q)
     {
-        $this->assertTrue($this->checkGraph($q)->size() > 0);
+        $this->assertTrue($this->checkGraph($q)->size() > 0, "Failed asserting that the following graph exists: $q");
     }
 
     protected function checkGraph($q)
@@ -81,12 +81,12 @@ class IntegrationTestCase extends \PHPUnit_Framework_TestCase
 
     protected function assertNodesCount($count)
     {
-        $this->assertSame($count, $this->client->run('MATCH (n) RETURN count(n) AS c')->firstRecord()->get('c'));
+        $this->assertSame($count, $this->client->run('MATCH (n) RETURN count(n) AS c')->firstRecord()->get('c'), "Failed asserting that node count is $count.");
     }
 
     protected function assertRelationshipsCount($count)
     {
-        $this->assertSame($count, $this->client->run('MATCH (n)-[r]->(o) RETURN count(r) AS c')->firstRecord()->get('c'));
+        $this->assertSame($count, $this->client->run('MATCH (n)-[r]->(o) RETURN count(r) AS c')->firstRecord()->get('c'), "Failed asserting that relationship count is $count.");
     }
 
     protected function playMovies()
