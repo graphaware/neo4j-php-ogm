@@ -12,6 +12,7 @@
 namespace GraphAware\Neo4j\OGM\Tests\Integration;
 
 use GraphAware\Neo4j\OGM\Tests\Integration\Models\ManyToManyRelationship\Group;
+use GraphAware\Neo4j\OGM\Tests\Integration\Models\ManyToManyRelationship\Permission;
 use GraphAware\Neo4j\OGM\Tests\Integration\Models\ManyToManyRelationship\User;
 
 /**
@@ -61,6 +62,34 @@ class ManyToManyRelationshipTest extends IntegrationTestCase
         foreach ($jim->getGroups() as $group) {
             $this->assertSame($oid, spl_object_hash($group->getUsers()[0]));
         }
+    }
+
+    public function testUserCanBeLoadedWithGroupsNested()
+    {
+        $user = new User('jim');
+        $group1 = new Group('owners');
+        $group2 = new Group('creators');
+        $perm1 = new Permission('delete');
+        $perm2 = new Permission('create');
+        $group1->getPermissions()->add($perm1);
+        $group2->getPermissions()->add($perm2);
+        $this->em->persist($group1);
+        $this->em->persist($group2);
+        $user->getGroups()->add($group1);
+        $user->getGroups()->add($group2);
+        $this->em->persist($user);
+        $this->em->flush();
+        $this->em->clear();
+
+        /** @var User $jim */
+        $jim = $this->em->getRepository(User::class)->findOneBy(['login' => 'jim']);
+
+        $this->assertEquals(2, $jim->getGroups()->count());
+        /** @var $permission Permission */
+        $permission = $jim->getGroups()->first()->getPermission();
+        $this->assertEquals(1, $permission->getGroups()->count());
+        $permission->getGroups()->first(); // trigger
+        $this->assertEquals(1, $permission->getGroups()->count(), 'groups count should not change after accessing groups permissions.');
     }
 
     public function testUserCanHaveGroupAdded()
