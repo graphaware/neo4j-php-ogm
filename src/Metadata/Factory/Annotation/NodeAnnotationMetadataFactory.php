@@ -43,7 +43,7 @@ final class NodeAnnotationMetadataFactory
         $annotation = $this->reader->getClassAnnotation($reflectionClass, Node::class);
 
         if (null !== $annotation) {
-            return new NodeAnnotationMetadata($annotation->label, $annotation->repository);
+            return new NodeAnnotationMetadata($annotation->labels, $annotation->repository);
         }
 
         throw new MappingException(sprintf('The class "%s" is missing the "%s" annotation', $nodeEntityClass, Node::class));

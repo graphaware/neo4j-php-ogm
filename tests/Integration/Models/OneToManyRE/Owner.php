@@ -17,7 +17,7 @@ use GraphAware\Neo4j\OGM\Common\Collection;
 /**
  * Class Owner.
  *
- * @OGM\Node(label="Owner")
+ * @OGM\Node(labels={"Owner"})
  */
 class Owner
 {

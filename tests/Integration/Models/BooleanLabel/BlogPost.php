@@ -16,7 +16,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 /**
  * Class BlogPost.
  *
- * @OGM\Node(label="BlogPost")
+ * @OGM\Node(labels={"BlogPost"})
  */
 class BlogPost
 {

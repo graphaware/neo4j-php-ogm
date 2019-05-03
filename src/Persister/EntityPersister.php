@@ -70,7 +70,7 @@ class EntityPersister
             }
         }
 
-        $query = sprintf('CREATE (n:%s) SET n += {properties}', $this->classMetadata->getLabel());
+        $query = sprintf('CREATE (n:%s) SET n += {properties}', \implode(':', $this->classMetadata->getLabels()));
         if (!empty($extraLabels)) {
             foreach ($extraLabels as $label) {
                 $query .= ' SET n:'.$label;
@@ -141,8 +141,8 @@ class EntityPersister
      */
     public function refresh($id, $entity)
     {
-        $label = $this->classMetadata->getLabel();
-        $query = sprintf('MATCH (n:%s) WHERE id(n) = {%s} RETURN n', $label, 'id');
+        $label = $this->classMetadata->getLabels();
+        $query = sprintf('MATCH (n:%s) WHERE id(n) = {%s} RETURN n', \implode(':', $label), 'id');
         $result = $this->entityManager->getDatabaseDriver()->run($query, ['id' => $id]);
 
         if ($result->size() > 0) {

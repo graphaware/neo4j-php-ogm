@@ -14,7 +14,7 @@ namespace GraphAware\Neo4j\OGM\Tests\Proxy\Model;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * @OGM\Node(label="Account")
+ * @OGM\Node(labels={"Account"})
  */
 class Account
 {

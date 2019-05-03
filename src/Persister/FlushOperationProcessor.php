@@ -32,7 +32,7 @@ class FlushOperationProcessor
         $byLabelsMap = [];
         foreach ($nodesScheduledForCreate as $node) {
             $metadata = $this->em->getClassMetadataFor(get_class($node));
-            $byLabelsMap[$metadata->getLabel()][] = $node;
+            $byLabelsMap[\implode('`:`', $metadata->getLabels())][] = $node;
         }
 
         return $this->createLabeledNodesCreationStack($byLabelsMap);
@@ -49,7 +49,7 @@ class FlushOperationProcessor
                 $metadata = $this->em->getClassMetadataFor(get_class($entity));
                 $oid = spl_object_hash($entity);
                 $labeledProperties = $metadata->getLabeledPropertiesToBeSet($entity);
-                $lblKey = sprintf('%s_%s', $metadata->getLabel(), implode('_', array_map(function (LabeledPropertyMetadata $labeledPropertyMetadata) {
+                $lblKey = sprintf('%s_%s', \implode(':', $metadata->getLabels()), implode('_', array_map(function (LabeledPropertyMetadata $labeledPropertyMetadata) {
                     return $labeledPropertyMetadata->getLabelName();
                 }, $labeledProperties)));
 

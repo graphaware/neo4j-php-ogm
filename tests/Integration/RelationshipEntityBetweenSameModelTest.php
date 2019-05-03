@@ -142,7 +142,7 @@ class RelationshipEntityBetweenSameModelTest extends IntegrationTestCase
 
 /**
  *
- * @OGM\Node(label="User")
+ * @OGM\Node(labels={"User"})
  */
 class SystemUser
 {

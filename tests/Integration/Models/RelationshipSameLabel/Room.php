@@ -17,7 +17,7 @@ use GraphAware\Neo4j\OGM\Common\Collection;
 /**
  * Class Room.
  *
- * @OGM\Node(label="Room")
+ * @OGM\Node(labels={"Room"})
  */
 class Room
 {

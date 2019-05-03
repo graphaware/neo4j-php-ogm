@@ -14,7 +14,7 @@ namespace GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * @OGM\Node(label="Movie",repository="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\MovieRepository")
+ * @OGM\Node(labels={"Movie"},repository="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\MovieRepository")
  */
 class Movie
 {

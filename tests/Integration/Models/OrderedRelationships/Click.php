@@ -16,7 +16,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 /**
  * Class Click.
  *
- * @OGM\Node(label="Click")
+ * @OGM\Node(labels={"Click"})
  */
 class Click
 {

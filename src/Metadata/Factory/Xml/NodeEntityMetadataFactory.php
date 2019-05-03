@@ -59,14 +59,14 @@ class NodeEntityMetadataFactory
      */
     private function buildNodeMetadata(\SimpleXMLElement $node, $className)
     {
-        if (!isset($node['label'])) {
+        if (!isset($node['labels'])) {
             throw new MappingException(
                 sprintf('Class "%s" OGM XML node configuration is missing "label" attribute', $className)
             );
         }
 
         return new NodeAnnotationMetadata(
-            (string) $node['label'],
+            \explode(' ',(string) $node['labels']),
             isset($node['repository-class']) ? (string) $node['repository-class'] : null
         );
     }

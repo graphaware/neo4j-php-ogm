@@ -16,7 +16,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 /**
  * Class Device.
  *
- * @OGM\Node(label="Device")
+ * @OGM\Node(labels={"Device"})
  */
 class Device
 {

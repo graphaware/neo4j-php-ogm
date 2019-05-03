@@ -16,7 +16,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 /**
  * Class Floor.
  *
- * @OGM\Node(label="Floor")
+ * @OGM\Node(labels={"Floor"})
  */
 class Floor
 {

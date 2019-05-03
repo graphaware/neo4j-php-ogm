@@ -8,7 +8,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
  * Class Bag
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\ManyToOne
  *
- * @OGM\Node(label="Bag")
+ * @OGM\Node(labels={"Bag"})
  */
 class Bag
 {
