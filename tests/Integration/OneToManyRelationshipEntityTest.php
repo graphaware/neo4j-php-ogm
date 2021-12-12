@@ -186,4 +186,36 @@ class OneToManyRelationshipEntityTest extends IntegrationTestCase
         $result = $this->client->run('MATCH (o:Owner)-[r:ACQUIRED]->(h) RETURN count(r) AS c');
         $this->assertSame(1, $result->firstRecord()->get('c'));
     }
+
+    public function testOwnerCanRefreshCollection()
+    {
+        // create initial data
+        $owner = new Owner('M');
+        $house1 = new House();
+        $house1->setAddress('A Street 1');
+        $this->persist($owner, $house1);
+        $this->em->flush();
+        $this->assertGraphExist('(o:Owner {name:"M"})');
+        $this->assertGraphExist('(h:House {address: "A Street 1"})');
+        $this->em->flush();
+        $this->em->clear();
+
+        // load owner instance
+        /** @var Owner $me */
+        $me = $this->em->getRepository(Owner::class)->findOneBy(['name' => 'M']);
+
+        $this->assertSame(0, $me->getAcquisitions()->count());
+
+        // make some changes to the db
+        $this->em->getDatabaseDriver()->run('MATCH (o:Owner {name:"M"}), (h:House {address: "A Street 1"}) CREATE (o)-[r:ACQUIRED {year: 1980}]->(h)');
+        $this->assertGraphExist('(o:Owner {name:"M"})-[r:ACQUIRED {year: 1980}]->(h:House {address: "A Street 1"})');
+
+        // this line should fetch a new record, but somehow it uses a chaced one, as the assertation below fails
+        $me = $this->em->getRepository(Owner::class)->findOneBy(['name' => 'M']);
+
+        // uncommenting this line complains that the entity is not managed by the entity manager, however if it is cached, I expect it to be refreshed by this.
+//        $this->em->refresh($me);
+        $this->assertSame(1, $me->getAcquisitions()->count());
+   }
+
 }
