@@ -42,10 +42,26 @@ class Group
      */
     protected $users;
 
+    /**
+     * @OGM\Relationship(type="HAS_PERMISSION", direction="OUTGOING", mappedBy="groups", collection=true, targetEntity="Permission")
+     *
+     * @var Collection|Permission[]
+     */
+    protected $permissions;
+
+    /**
+     * @OGM\Relationship(type="HAS_PERMISSION", direction="OUTGOING", mappedBy="groups", collection=false, targetEntity="Permission")
+     *
+     * @var Permission
+     */
+    protected $permission;
+
+
     public function __construct($name)
     {
         $this->name = $name;
         $this->users = new Collection();
+        $this->permissions = new Collection();
     }
 
     /**
@@ -70,6 +86,22 @@ class Group
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * @return Collection|Permission[]
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
+    }
+
+    /**
+     * @return Permission
+     */
+    public function getPermission()
+    {
+        return $this->permission;
     }
 
     /**
