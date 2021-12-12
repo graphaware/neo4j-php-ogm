@@ -14,7 +14,7 @@ namespace GraphAware\Neo4j\OGM\Tests\Mapping;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * @OGM\Node(label="Dummy", repository="DummyRepository")
+ * @OGM\Node(labels={"Dummy"}, repository="DummyRepository")
  */
 class NodeEntityWithCustomRepo
 {

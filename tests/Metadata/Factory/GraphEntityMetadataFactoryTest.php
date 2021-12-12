@@ -137,7 +137,7 @@ class GraphEntityMetadataFactoryTest extends \PHPUnit_Framework_TestCase
      */
     private function assertPersonMetadata($metadata)
     {
-        $this->assertSame('Person', $metadata->getLabel());
+        $this->assertSame('Person', $metadata->getLabels());
         $this->assertSame(false, $metadata->hasCustomRepository());
 
         $this->assertSame('id', $metadata->getIdentifier());
@@ -186,7 +186,7 @@ class GraphEntityMetadataFactoryTest extends \PHPUnit_Framework_TestCase
      */
     private function assertMovieMetadata($metadata)
     {
-        $this->assertSame('Movie', $metadata->getLabel());
+        $this->assertSame('Movie', $metadata->getLabels());
         $this->assertSame(MovieRepository::class, $metadata->getRepositoryClass());
 
         $this->assertSame('id', $metadata->getIdentifier());

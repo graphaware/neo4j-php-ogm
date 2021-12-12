@@ -16,7 +16,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 /**
  * Class Hotel.
  *
- * @OGM\Node(label="Hotel")
+ * @OGM\Node(labels={"Hotel"})
  */
 class Hotel
 {

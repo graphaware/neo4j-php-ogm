@@ -18,9 +18,9 @@ namespace GraphAware\Neo4j\OGM\Annotations;
 final class Node implements Entity
 {
     /**
-     * @var string
+     * @var string[]
      */
-    public $label;
+    public $labels;
 
     /**
      * @var string

@@ -16,7 +16,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 /**
  * Class ModelNumber.
  *
- * @OGM\Node(label="ModelNumber")
+ * @OGM\Node(labels={"ModelNumber"})
  */
 class ModelNumber
 {

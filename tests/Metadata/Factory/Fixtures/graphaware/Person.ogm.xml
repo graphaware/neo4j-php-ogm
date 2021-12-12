@@ -2,7 +2,7 @@
 <graphaware-mapping xmlns="http://graphaware.com/schemas/ogm/graphaware-mapping"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xsi:schemaLocation="http://graphaware.com/schemas/ogm/graphaware-mapping http://graphaware.com/schemas/ogm/graphaware-mapping.xsd">
-    <node label="Person" entity="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\Person">
+    <node labels="Person" entity="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\Person">
         <id name="id"/>
         <property name="name" type="string"/>
         <property name="age" type="int" nullable="false">

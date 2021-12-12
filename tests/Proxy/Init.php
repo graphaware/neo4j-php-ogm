@@ -14,7 +14,7 @@ namespace GraphAware\Neo4j\OGM\Tests\Proxy;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * @OGM\Node(label="Init")
+ * @OGM\Node(labels={"Init"})
  *
  * Class Init
  */

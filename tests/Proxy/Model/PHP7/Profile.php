@@ -14,7 +14,7 @@ namespace GraphAware\Neo4j\OGM\Tests\Proxy\Model\PHP7;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * @OGM\Node(label="Profile")
+ * @OGM\Node(labels={"Profile"})
  */
 class Profile
 {

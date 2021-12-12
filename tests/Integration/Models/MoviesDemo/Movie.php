@@ -17,7 +17,7 @@ use GraphAware\Neo4j\OGM\Common\Collection;
 /**
  * Class Movie.
  *
- * @OGM\Node(label="Movie", repository="GraphAware\Neo4j\OGM\Tests\Integration\Repository\MoviesCustomRepository")
+ * @OGM\Node(labels={"Movie"}, repository="GraphAware\Neo4j\OGM\Tests\Integration\Repository\MoviesCustomRepository")
  */
 class Movie
 {

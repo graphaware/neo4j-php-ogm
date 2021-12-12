@@ -17,7 +17,7 @@ use GraphAware\Neo4j\OGM\Common\Collection;
 /**
  * Class Group.
  *
- * @OGM\Node(label="Group")
+ * @OGM\Node(labels={"Group"})
  */
 class Group
 {

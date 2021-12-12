@@ -17,7 +17,7 @@ use GraphAware\Neo4j\OGM\Common\Collection;
 /**
  * Class Building.
  *
- * @OGM\Node(label="Building")
+ * @OGM\Node(labels={"Building"})
  */
 class Building
 {

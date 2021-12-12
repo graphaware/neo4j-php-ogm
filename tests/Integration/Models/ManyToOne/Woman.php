@@ -8,7 +8,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
  * Class Woman
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Models\ManyToOne
  *
- * @OGM\Node(label="Woman")
+ * @OGM\Node(labels={"Woman"})
  */
 class Woman
 {

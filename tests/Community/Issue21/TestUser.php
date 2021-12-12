@@ -17,7 +17,7 @@ use GraphAware\Neo4j\OGM\Common\Collection;
 /**
  * Class TestUser.
  *
- * @OGM\Node(label="TestUser")
+ * @OGM\Node(labels={"TestUser"})
  */
 class TestUser implements \JsonSerializable
 {

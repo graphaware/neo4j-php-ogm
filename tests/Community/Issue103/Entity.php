@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * @OGM\Node(label="Entity")
+ * @OGM\Node(labels={"Entity"})
  */
 class Entity
 {

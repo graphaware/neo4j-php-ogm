@@ -14,7 +14,7 @@ namespace GraphAware\Neo4j\OGM\Tests\Proxy;
 use GraphAware\Neo4j\OGM\Annotations as OGM;
 
 /**
- * @OGM\Node(label="Related")
+ * @OGM\Node(labels={"Related"})
  *
  * Class Related
  */

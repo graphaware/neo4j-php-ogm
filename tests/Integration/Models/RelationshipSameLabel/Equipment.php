@@ -17,7 +17,7 @@ use GraphAware\Neo4j\OGM\Common\Collection;
 /**
  * Class Equipment.
  *
- * @OGM\Node(label="Equipment")
+ * @OGM\Node(labels={"Equipment"})
  */
 class Equipment
 {

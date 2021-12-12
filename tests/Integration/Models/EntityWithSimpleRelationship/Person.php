@@ -16,7 +16,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 /**
  * Class Person.
  *
- * @OGM\Node(label="Person")
+ * @OGM\Node(labels={"Person"})
  */
 class Person
 {

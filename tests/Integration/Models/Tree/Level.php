@@ -8,7 +8,7 @@ use GraphAware\Neo4j\OGM\Common\Collection;
 
 /**
  *
- * @OGM\Node(label="Level")
+ * @OGM\Node(labels={"Level"})
  */
 class Level
 {

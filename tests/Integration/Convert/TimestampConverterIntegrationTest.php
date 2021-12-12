@@ -113,7 +113,7 @@ class TimestampConverterIntegrationTest extends IntegrationTestCase
  * Class TimestampConverterEntity
  * @package GraphAware\Neo4j\OGM\Tests\Integration\Convert
  *
- * @OGM\Node(label="Entity")
+ * @OGM\Node(labels={"Entity"})
  */
 class TimestampConverterEntity
 {

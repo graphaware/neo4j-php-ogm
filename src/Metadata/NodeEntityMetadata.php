@@ -66,11 +66,11 @@ final class NodeEntityMetadata extends GraphEntityMetadata
     }
 
     /**
-     * @return string
+     * @return string[]
      */
-    public function getLabel()
+    public function getLabels()
     {
-        return $this->nodeAnnotationMetadata->getLabel();
+        return $this->nodeAnnotationMetadata->getLabels();
     }
 
     /**

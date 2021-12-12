@@ -17,7 +17,7 @@ use GraphAware\Neo4j\OGM\Common\Collection;
 /**
  * Class User.
  *
- * @OGM\Node(label="User")
+ * @OGM\Node(labels={"User"})
  */
 class User
 {

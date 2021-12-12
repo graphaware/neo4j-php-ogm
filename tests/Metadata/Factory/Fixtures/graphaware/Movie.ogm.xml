@@ -2,7 +2,7 @@
 <graphaware-mapping xmlns="http://graphaware.com/schemas/ogm/graphaware-mapping"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xsi:schemaLocation="http://graphaware.com/schemas/ogm/graphaware-mapping http://graphaware.com/schemas/ogm/graphaware-mapping.xsd">
-    <node label="Movie"
+    <node labels="Movie movies"
           entity="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\Movie"
           repository-class="GraphAware\Neo4j\OGM\Tests\Metadata\Factory\Fixtures\MovieRepository">
         <id name="id"/>

@@ -48,15 +48,15 @@ final class ClassMetadata
     }
 
     /**
-     * @return string
+     * @return string[]
      */
-    public function getLabel()
+    public function getLabels()
     {
         if (!$this->isNodeEntity()) {
             throw new MappingException(sprintf('This class metadata is not for a node entity'));
         }
 
-        return $this->entityAnnotation->label;
+        return $this->entityAnnotation->labels;
     }
 
     /**
