@@ -157,6 +157,8 @@ class Person
 }
 ```
 
+**Note :** Every properties and accessors MUST be wrote in camelCase.
+
 
 The next step is to apply the metadata that will define how your entities, their properties and references should be mapped to the
 database. Metadata for entities is defined using docblock annotations :
